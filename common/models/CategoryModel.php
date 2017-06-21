@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\CategoryImageModel;
 
 /**
  * This is the model class for table "categories".
@@ -16,7 +17,7 @@ use Yii;
 class CategoryModel extends \common\models\BaseModel
 {
     public $file;
-    
+
     public static function tableName()
     {
         return 'categories';
@@ -43,5 +44,17 @@ class CategoryModel extends \common\models\BaseModel
             'parent_id' => 'Parent ID',
             'status' => 'Status',
         ];
+    }
+    
+    public static function getByIdParent($parent_id, $children = false)
+    {
+        $cats = self::find()->where(['parent_id' => $parent_id, 'status' => self::STATUS_ACTIVE])->all();
+        if ($children) $cats = parent::executeMethods($cats, ['checkChildren']);
+        return CategoryImageModel::getOneImage($cats);
+    }
+    
+    public static function getOne($id)
+    {
+        return self::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 }

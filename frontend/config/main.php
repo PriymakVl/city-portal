@@ -46,10 +46,13 @@ return [
             'errorAction' => 'site/error',
         ],
         'urlManager' => [
-            'enablePrettyUrl' => false,
-            'showScriptName' => true,
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
             'rules' => [
-                //'' => 'site/index',                                
+                'category' => 'categories'
+                //'' => 'site/index', 
+                //'main' => 'main/index',
+                //'category/<cat_id:\d+>' => 'category',                               
                 //'<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
             ],
         ],

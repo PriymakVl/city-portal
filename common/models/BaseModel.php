@@ -14,7 +14,7 @@ class BaseModel extends ActiveRecord implements ConfigApp
 {
     
     public static $pages;
-    
+    public $children;
     //use CommonStaticMethods;
     
     public static function getOne($id, $default, $status)
@@ -56,6 +56,24 @@ class BaseModel extends ActiveRecord implements ConfigApp
             $obj->parent_id = $parent_id;
             $$obj->save();
         }     
+    }
+    
+    public static function executeMethods($array, $methods)
+    {
+        if (!is_array($array)) return false;
+        foreach ($methods as $method) {
+            foreach ($array as $object) {
+                $object->$method();
+            }
+        } 
+        return $array;      
+    }
+    
+    public function checkChildren()
+    {
+        $classname = get_class($this);
+        $child = $classname::find()->where(['parent_id' => $obj->id, 'status' => self::STATUS_ACTIVE])->one();
+        if ($child) $this->children = true;
     }
     
 
